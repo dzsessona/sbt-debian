@@ -27,7 +27,7 @@ seq(assemblySettings:_*)
 
 assembleArtifact in packageScala := true
 
-jarName in packageDependency := "sbtdeb-deps.jar"
+jarName in packageDependency := name.value + "-deps.jar"
 
 //DEBIAN
 seq(packagerSettings:_*)
@@ -70,8 +70,8 @@ com.typesafe.sbt.packager.debian.Keys.linuxPackageMappings in Debian <+= (baseDi
     (deb / "debian/bin/helloDebian.sh")               -> "/usr/local/sbtdeb/bin/helloDebian.sh",
     (deb / "debian/bin/helloDebianCLIParameters.sh")  -> "/usr/local/sbtdeb/bin/helloDebianCLIParameters.sh",
     (deb / "debian/bin/helloDebianExternalConfig.sh") -> "/usr/local/sbtdeb/bin/helloDebianExternalConfig.sh",
-    (deb / "target/scala-2.10/sbtdeb-deps.jar")       -> "/usr/local/sbtdeb/sbtdeb-deps.jar",
-    (deb / "target/scala-2.10/sbtdeb_2.10-1.0.jar")   -> "/usr/local/sbtdeb/sbtdeb_2.10-1.0.jar")
+    (deb / "target/scala-2.10/sbt-debian-deps.jar")       -> "/usr/local/sbtdeb/sbt-debian-deps.jar",
+    (deb / "target/scala-2.10/sbt-debian_2.10-1.0.jar")   -> "/usr/local/sbtdeb/sbt-debian_2.10-1.0.jar")
     withUser "root" withGroup "root" withPerms "0755")
 }
 //;reload;clean;package;assembly-package-dependency;debian:package-bin

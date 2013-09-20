@@ -1,5 +1,5 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: sbtdeb
+Upstream-Name: sbt-debian
 Upstream-Contact: Your Name, <your.name@whatever.com>
 
 Files: *
