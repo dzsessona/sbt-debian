@@ -1,0 +1,12 @@
+<configuration>
+
+    <!--appenders-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder><pattern> %d{HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern></encoder>
+    </appender>
+
+    <!--loggers-->
+    <logger name="me.dsnet"            level="info"></logger>
+    <root level="info"><appender-ref ref="STDOUT" /></root>
+
+</configuration>
