@@ -1,1 +1,5 @@
-planning to extend the native packager to fetch from git the changes from previous version
+sbt-debian (currentversion) all; urgency=low
+
+  * currentchange
+
+ -- Your Name <your.name@whatever.com>  Thu, 28 Jan 2010 18:03:18 +0100

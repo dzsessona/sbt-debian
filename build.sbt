@@ -38,7 +38,9 @@ debArchitecture := "all"
 
 com.typesafe.sbt.packager.debian.Keys.name in Debian := name.value
 
-com.typesafe.sbt.packager.debian.Keys.version in Debian <<= (version, debArchitecture) apply { (pkgv, debArch) => pkgv + "_" + debArch }
+//com.typesafe.sbt.packager.debian.Keys.version in Debian <<= (version, debArchitecture) apply { (pkgv, debArch) => pkgv + "_" + debArch }
+
+com.typesafe.sbt.packager.debian.Keys.version in Debian := "1.0.0-all-12"
 
 com.typesafe.sbt.packager.debian.Keys.maintainer in Debian:= "Your Name <your.name@whatever.com>"
 
@@ -46,32 +48,31 @@ com.typesafe.sbt.packager.debian.Keys.packageSummary := "Test sbt debian"
 
 com.typesafe.sbt.packager.debian.Keys.packageDescription in Debian:= "Test stb-native-packager to build deb package from a sbt project"
 
-com.typesafe.sbt.packager.debian.Keys.debianPackageDependencies in Debian ++= Seq("java2-runtime")
+com.typesafe.sbt.packager.debian.Keys.debianPackageDependencies in Debian ++= Seq("jarwrapper")
 
 com.typesafe.sbt.packager.debian.Keys.debianPackageRecommends in Debian ++= Seq("git")
 
 com.typesafe.sbt.packager.debian.Keys.linuxPackageMappings in Debian <+= (baseDirectory, name) map {
   (deb, projname) =>  (packageMapping(
-    (deb / "debian/changelog") -> ("/usr/share/doc/" + projname + "/changelog.gz"))
+    (deb / "debian/changelog") -> ("/usr/share/doc/" + projname + "/changelog.Debian.gz"))
     withUser "root" withGroup "root" withPerms "0644" gzipped) asDocs()
 }
 
 com.typesafe.sbt.packager.debian.Keys.linuxPackageMappings in Debian <+= (baseDirectory, name) map {
   (deb, projname) =>  (packageMapping(
-    (deb / "debian/config/application.conf") -> ("/usr/local/" + projname + "/config/application.conf"),
-    (deb / "debian/config/logback.xml")      -> ("/usr/local/" + projname + "/config/logback.xml"),
-    (deb / "debian/copyright")               -> ("/usr/share/doc/" + projname + "/copyright"),
-    (deb / "debian/copyright")               -> "/DEBIAN/copyright")
+    (deb / "debian/config/application.conf") -> ("/usr/share/" + projname + "/config/application.conf"),
+    (deb / "debian/config/logback.xml")      -> ("/usr/share/" + projname + "/config/logback.xml"),
+    (deb / "debian/copyright")               -> ("/usr/share/doc/" + projname + "/copyright"))
     withUser "root" withGroup "root" withPerms "0644")
 }
 
 com.typesafe.sbt.packager.debian.Keys.linuxPackageMappings in Debian <+= (baseDirectory, name) map {
   (deb, projname) => (packageMapping(
-    (deb / "debian/bin/helloDebian.sh")                       -> ("/usr/local/" + projname + "/bin/helloDebian.sh"),
-    (deb / "debian/bin/helloDebianCLIParameters.sh")          -> ("/usr/local/" + projname + "/bin/helloDebianCLIParameters.sh"),
-    (deb / "debian/bin/helloDebianExternalConfig.sh")         -> ("/usr/local/" + projname + "/bin/helloDebianExternalConfig.sh"),
-    (deb / ("target/scala-2.10/"+ projname +"-deps.jar"))     -> ("/usr/local/" + projname + "/sbt-debian-deps.jar"),
-    (deb / ("target/scala-2.10/"+ projname +"_2.10-1.0.jar")) -> ("/usr/local/" + projname + "/sbt-debian_2.10-1.0.jar"))
+    (deb / "debian/bin/helloDebian.sh")                       -> ("/usr/share/" + projname + "/bin/helloDebian.sh"),
+    (deb / "debian/bin/helloDebianCLIParameters.sh")          -> ("/usr/share/" + projname + "/bin/helloDebianCLIParameters.sh"),
+    (deb / "debian/bin/helloDebianExternalConfig.sh")         -> ("/usr/share/" + projname + "/bin/helloDebianExternalConfig.sh"),
+    (deb / ("target/scala-2.10/"+ projname +"-deps.jar"))     -> ("/usr/share/" + projname + "/sbt-debian-deps.jar"),
+    (deb / ("target/scala-2.10/"+ projname +"_2.10-1.0.jar")) -> ("/usr/share/" + projname + "/sbt-debian_2.10-1.0.jar"))
     withUser "root" withGroup "root" withPerms "0755")
 }
 //;reload;clean;package;assembly-package-dependency;debian:package-bin
