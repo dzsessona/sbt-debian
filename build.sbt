@@ -27,7 +27,15 @@ seq(assemblySettings:_*)
 
 assembleArtifact in packageScala := true
 
-jarName in packageDependency := name.value + "-deps.jar"
+jarName in assembly := name.value + "-assembly.jar"
+
+mergeStrategy in assembly <<= (mergeStrategy in assembly) {
+  (old) => {
+    case PathList("application.conf") => MergeStrategy.discard
+    case PathList("logback.xml")      => MergeStrategy.discard
+    case x => old(x)
+  }
+}
 
 //DEBIAN
 seq(packagerSettings:_*)
@@ -38,9 +46,7 @@ debArchitecture := "all"
 
 com.typesafe.sbt.packager.debian.Keys.name in Debian := name.value
 
-//com.typesafe.sbt.packager.debian.Keys.version in Debian <<= (version, debArchitecture) apply { (pkgv, debArch) => pkgv + "_" + debArch }
-
-com.typesafe.sbt.packager.debian.Keys.version in Debian := "1.0.0-all-12"
+com.typesafe.sbt.packager.debian.Keys.version in Debian <<= (version, debArchitecture) apply {(pkgv, debArch) => pkgv + ".0-" + debArch + "-13"}
 
 com.typesafe.sbt.packager.debian.Keys.maintainer in Debian:= "Your Name <your.name@whatever.com>"
 
@@ -71,8 +77,7 @@ com.typesafe.sbt.packager.debian.Keys.linuxPackageMappings in Debian <+= (baseDi
     (deb / "debian/bin/helloDebian.sh")                       -> ("/usr/share/" + projname + "/bin/helloDebian.sh"),
     (deb / "debian/bin/helloDebianCLIParameters.sh")          -> ("/usr/share/" + projname + "/bin/helloDebianCLIParameters.sh"),
     (deb / "debian/bin/helloDebianExternalConfig.sh")         -> ("/usr/share/" + projname + "/bin/helloDebianExternalConfig.sh"),
-    (deb / ("target/scala-2.10/"+ projname +"-deps.jar"))     -> ("/usr/share/" + projname + "/sbt-debian-deps.jar"),
-    (deb / ("target/scala-2.10/"+ projname +"_2.10-1.0.jar")) -> ("/usr/share/" + projname + "/sbt-debian_2.10-1.0.jar"))
+    (deb / ("target/scala-2.10/"+ projname +"-assembly.jar")) -> ("/usr/share/" + projname + "/" + projname +"-assembly.jar"))
     withUser "root" withGroup "root" withPerms "0755")
 }
-//;reload;clean;package;assembly-package-dependency;debian:package-bin
+//;reload;clean;package;assembly;debian:package-bin
